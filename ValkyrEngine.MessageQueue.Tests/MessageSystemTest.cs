@@ -48,7 +48,7 @@ namespace ValkyrEngine.MessageQueue.Tests
       messageSystem.SendMessage(message);
 
       // Act
-      await messageSystem.ProcessMessages();
+      await messageSystem.ProcessMessagesAsync();
 
       // Assert
       Assert.Empty(messageSystem.ActiveMessages);

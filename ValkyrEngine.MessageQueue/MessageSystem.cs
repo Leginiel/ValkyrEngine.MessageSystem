@@ -6,6 +6,9 @@ using ValkyrEngine.MessageQueue.Exceptions;
 
 namespace ValkyrEngine.MessageQueue
 {
+  /// <summary>
+  /// Provides a base class for handling messages andreceiver. 
+  /// </summary>
   public class MessageSystem
   {
     private readonly List<IMessageHandler> receiver = new List<IMessageHandler>();
@@ -13,10 +16,23 @@ namespace ValkyrEngine.MessageQueue
     private readonly ConcurrentQueue<IMessage> messages = new ConcurrentQueue<IMessage>();
     private readonly MessageHandlerFactory receiverFactory = new MessageHandlerFactory();
 
+    /// <summary>
+    /// Returns the registered receiver.
+    /// </summary>
     public IReadOnlyList<IMessageHandler> Receiver => receiver;
+    /// <summary>
+    /// Retuns the pending messages.
+    /// </summary>
+    /// <remarks>
+    /// Pending messages will be processed by the next <seealso cref="ProcessMessagesAsync"/> call.
+    /// </remarks>
     public IReadOnlyCollection<IMessage> ActiveMessages => messages;
 
-
+    /// <summary>
+    /// Registeres a new receiver callback. 
+    /// </summary>
+    /// <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
+    /// <param name="callback">Callback, that should be called for the message.</param>
     public void RegisterReceiver<T>(Func<T, Task> callback)
       where T : IMessage
     {
@@ -28,7 +44,11 @@ namespace ValkyrEngine.MessageQueue
 
       receiver.Add(receiverFactory.CreateMessageHandler(callback));
     }
-
+    /// <summary>
+    /// Removes an existing receier from the messaging system.
+    /// </summary>
+    /// <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
+    /// <param name="callback">Callback, with whon the receiver was registered.</param>
     public void UnregisterReceiver<T>(Func<T, Task> callback)
       where T : IMessage
     {
@@ -42,7 +62,11 @@ namespace ValkyrEngine.MessageQueue
 
       receiver.Remove(handler);
     }
-
+    /// <summary>
+    /// Adds a new message to the messaging system. 
+    /// </summary>
+    /// <typeparam name="T">Type of the message.</typeparam>
+    /// <param name="message">Message, that should be added.</param>
     public void SendMessage<T>(T message)
       where T : IMessage
     {
@@ -51,7 +75,11 @@ namespace ValkyrEngine.MessageQueue
 
       messages.Enqueue(message);
     }
-    public async Task ProcessMessages()
+    /// <summary>
+    /// Processes all pending messages with an asynchronous operation.
+    /// </summary>
+    /// <returns></returns>
+    public async Task ProcessMessagesAsync()
     {
       runningReceiverTasks.Clear();
 
