@@ -15,4 +15,8 @@
     </AssemblyAttribute>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.4" />
+  </ItemGroup>
+
 </Project>
