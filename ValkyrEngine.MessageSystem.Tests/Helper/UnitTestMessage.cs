@@ -1,4 +1,4 @@
-﻿namespace ValkyrEngine.MessageQueue.Tests.Helper
+﻿namespace ValkyrEngine.MessageSystem.Tests.Helper
 {
   internal class UnitTestMessage : IMessage
   {

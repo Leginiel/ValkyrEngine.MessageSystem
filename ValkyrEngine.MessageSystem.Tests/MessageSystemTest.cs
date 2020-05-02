@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using ValkyrEngine.MessageQueue.Exceptions;
-using ValkyrEngine.MessageQueue.Tests.Helper;
+using ValkyrEngine.MessageSystem.Exceptions;
+using ValkyrEngine.MessageSystem.Tests.Helper;
 using Xunit;
 
-namespace ValkyrEngine.MessageQueue.Tests
+namespace ValkyrEngine.MessageSystem.Tests
 {
   public class MessageSystemTest
   {

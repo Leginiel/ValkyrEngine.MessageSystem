@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace ValkyrEngine.MessageQueue
+namespace ValkyrEngine.MessageSystem
 {
   internal class MessageHandler<T> : IMessageHandler
     where T : IMessage

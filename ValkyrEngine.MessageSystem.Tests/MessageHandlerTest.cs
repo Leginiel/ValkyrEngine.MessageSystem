@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using ValkyrEngine.MessageQueue.Tests.Helper;
+using ValkyrEngine.MessageSystem.Tests.Helper;
 using Xunit;
 
-namespace ValkyrEngine.MessageQueue.Tests
+namespace ValkyrEngine.MessageSystem.Tests
 {
   public class MessageHandlerTest
   {

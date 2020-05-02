@@ -2,9 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValkyrEngine.MessageQueue.Exceptions;
+using ValkyrEngine.MessageSystem.Exceptions;
 
-namespace ValkyrEngine.MessageQueue
+namespace ValkyrEngine.MessageSystem
 {
   /// <summary>
   /// Provides a base class for handling messages andreceiver. 

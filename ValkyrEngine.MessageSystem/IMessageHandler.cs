@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ValkyrEngine.MessageQueue
+namespace ValkyrEngine.MessageSystem
 {
   /// <summary>
   /// Represents an object, that is capable of handling a specified message.

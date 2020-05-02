@@ -1,4 +1,4 @@
-﻿namespace ValkyrEngine.MessageQueue
+﻿namespace ValkyrEngine.MessageSystem
 {
   /// <summary>
   /// Represents an object, which can be handled in the message system and can be used to transfer information.

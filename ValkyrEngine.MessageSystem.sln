@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValkyrEngine.MessageQueue", "ValkyrEngine.MessageQueue\ValkyrEngine.MessageQueue.csproj", "{39DE4C29-DB02-4A7F-A03E-19DE8B686615}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValkyrEngine.MessageSystem", "ValkyrEngine.MessageSystem\ValkyrEngine.MessageSystem.csproj", "{39DE4C29-DB02-4A7F-A03E-19DE8B686615}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValkyrEngine.MessageQueue.Tests", "ValkyrEngine.MessageQueue.Tests\ValkyrEngine.MessageQueue.Tests.csproj", "{9A16B442-F65F-4610-9110-131A90EF1F40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValkyrEngine.MessageSystem.Tests", "ValkyrEngine.MessageSystem.Tests\ValkyrEngine.MessageSystem.Tests.csproj", "{9A16B442-F65F-4610-9110-131A90EF1F40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

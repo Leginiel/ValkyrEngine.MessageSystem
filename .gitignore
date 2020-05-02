@@ -7,3 +7,7 @@
 /ValkyrEngine.MessageQueue/obj
 /ValkyrEngine.MessageQueue.Tests/bin/Debug/netcoreapp3.1
 /ValkyrEngine.MessageQueue.Tests/obj
+/ValkyrEngine.MessageSystem/obj
+/ValkyrEngine.MessageSystem.Tests/bin/Debug/netcoreapp3.1
+/ValkyrEngine.MessageSystem.Tests/obj
+/ValkyrEngine.MessageSystem/bin/Debug/netstandard2.0

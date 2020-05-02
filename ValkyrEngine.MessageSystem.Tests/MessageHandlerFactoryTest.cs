@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ValkyrEngine.MessageQueue.Tests
+namespace ValkyrEngine.MessageSystem.Tests
 {
   public class MessageHandlerFactoryTest
   {

@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ValkyrEngine.MessageSystem</name>
+    </assembly>
+    <members>
+        <member name="T:ValkyrEngine.MessageSystem.IMessage">
+            <summary>
+            Represents an object, which can be handled in the message system and can be used to transfer information.
+            </summary>
+        </member>
+        <member name="T:ValkyrEngine.MessageSystem.IMessageHandler">
+            <summary>
+            Represents an object, that is capable of handling a specified message.
+            </summary>
+        </member>
+        <member name="M:ValkyrEngine.MessageSystem.IMessageHandler.HandleMessageAsync(ValkyrEngine.MessageSystem.IMessage)">
+            <summary>
+            Handles the specified message as an asynchronous operation. 
+            </summary>
+            <param name="message">Specified message, that should be handled.</param>
+            <returns>The task object representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:ValkyrEngine.MessageSystem.IMessageHandler.CanHandle(ValkyrEngine.MessageSystem.IMessage)">
+            <summary>
+            Determines, if this handler can handle the given message.
+            </summary>
+            <param name="message">Specified message, that should be handled.</param>
+            <returns><code>True</code> if the handle is able to handle the message, otherwise <code>False</code>.</returns>
+        </member>
+        <member name="T:ValkyrEngine.MessageSystem.MessageSystem">
+            <summary>
+            Provides a base class for handling messages andreceiver. 
+            </summary>
+        </member>
+        <member name="P:ValkyrEngine.MessageSystem.MessageSystem.Receiver">
+            <summary>
+            Returns the registered receiver.
+            </summary>
+        </member>
+        <member name="P:ValkyrEngine.MessageSystem.MessageSystem.ActiveMessages">
+            <summary>
+            Retuns the pending messages.
+            </summary>
+            <remarks>
+            Pending messages will be processed by the next <seealso cref="M:ValkyrEngine.MessageSystem.MessageSystem.ProcessMessagesAsync"/> call.
+            </remarks>
+        </member>
+        <member name="M:ValkyrEngine.MessageSystem.MessageSystem.RegisterReceiver``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Registeres a new receiver callback. 
+            </summary>
+            <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
+            <param name="callback">Callback, that should be called for the message.</param>
+        </member>
+        <member name="M:ValkyrEngine.MessageSystem.MessageSystem.UnregisterReceiver``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Removes an existing receier from the messaging system.
+            </summary>
+            <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
+            <param name="callback">Callback, with whon the receiver was registered.</param>
+        </member>
+        <member name="M:ValkyrEngine.MessageSystem.MessageSystem.SendMessage``1(``0)">
+            <summary>
+            Adds a new message to the messaging system. 
+            </summary>
+            <typeparam name="T">Type of the message.</typeparam>
+            <param name="message">Message, that should be added.</param>
+        </member>
+        <member name="M:ValkyrEngine.MessageSystem.MessageSystem.ProcessMessagesAsync">
+            <summary>
+            Processes all pending messages with an asynchronous operation.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
