@@ -8,7 +8,6 @@ namespace ValkyrEngine.MessageSystem.Tests
   public class MessageHandlerTest
   {
     private bool genericCallbackCalled = false;
-    private bool callbackCalled = false;
 
 
     [Fact]
@@ -85,10 +84,7 @@ namespace ValkyrEngine.MessageSystem.Tests
     }
     private async Task HandleMessage(IMessage obj)
     {
-      await Task.Run(() =>
-      {
-        callbackCalled = true;
-      });
+      await Task.Run(() => { });
     }
   }
 }
