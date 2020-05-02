@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/ValkyrEngine.MessageQueue/bin/Debug/netstandard2.0
+/ValkyrEngine.MessageQueue/obj
+/ValkyrEngine.MessageQueue.Tests/bin/Debug/netcoreapp3.1
+/ValkyrEngine.MessageQueue.Tests/obj
