@@ -29,11 +29,12 @@ steps:
       $CI_Version = "$env:GITVERSION_MAJORMINORPATCH-ci-$FormattedDateTime"
       Write-Host ("##vso[task.setvariable variable=CI_Version;]$CI_Version")
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet restore'
+- task: NuGetCommand@2
   inputs:
-    command: restore
-    projects: ValkyrEngine.MessageSystem.sln
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+    vstsFeed: '7d6ca53e-efbe-4997-824c-1ba1235a5b75/00c2c3a6-4465-4443-a765-a5aa67bfe68e'
 
 - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
   displayName: 'Prepare analysis on SonarCloud'
@@ -72,19 +73,15 @@ steps:
   inputs:
     extraProperties: sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\ValkyrEngine.MessageSystem.Tests\coverage.opencover.xml
 
-- task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
-  displayName: 'Publish Quality Gate Result'
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet pack ValkyrEngine.MessageSystem.csproj'
+- task: NuGetCommand@2
+  displayName: 'nuget pack ValkyrEngine.MessageSystem.csproj'
   env:
     MSBUILDSINGLELOADCONTEXT: 1
   inputs:
     command: 'pack'
     packagesToPack: 'ValkyrEngine.MessageSystem/ValkyrEngine.MessageSystem.csproj'
-    versioningScheme: 'byEnvVar'
+    versioningScheme: 'byEnvVar'    
     versionEnvVar: 'CI_Version'    
-    packDestination: '$(Build.ArtifactStagingDirectory)'
 
 - task: CopyFiles@2
   displayName: 'Copy ValkyrEngine.MessageSystem Documentation File Generator to: $(Build.ArtifactStagingDirectory)'
@@ -106,11 +103,14 @@ steps:
     arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName="ValkyrEngine.MessageSystem.dll"'
 
 - task: NuGetCommand@2
-  displayName: 'NuGet push'
   inputs:
-    command: push
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/ValkyrEngine.MessageSystem.*.nupkg'
-    publishVstsFeed: 'db46bcea-c2fd-4d5a-a60d-6b8a87dd6ba9'
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '7d6ca53e-efbe-4997-824c-1ba1235a5b75/00c2c3a6-4465-4443-a765-a5aa67bfe68e'
+
+- task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+  displayName: 'Publish Quality Gate Result'
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage from $(Build.SourcesDirectory)\ValkyrEngine.MessageSystem.Tests\coverage.cobertura.xml'
