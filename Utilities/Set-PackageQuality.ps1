@@ -64,7 +64,7 @@ function Set-PackageQuality
 		$token = New-VSTSAuthenticationToken
 
 		if ($packageVersion -eq "") {
-			$file = Get-Item "$PSScriptRoot\*.nupkg"
+			$file = Get-Item "$PSScriptRoot\..\*.nupkg"
 			$VersionData = [regex]::matches($file.FullName,$VersionRegex)
 			$packageVersion=$VersionData[0]
 		}
