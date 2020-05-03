@@ -37,6 +37,7 @@ steps:
     MSBUILDSINGLELOADCONTEXT: 1
   inputs:
     projects: ValkyrEngine.MessageSystem.sln
+    arguments: '-c=$(BUILD_CONFIGURATION)'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
