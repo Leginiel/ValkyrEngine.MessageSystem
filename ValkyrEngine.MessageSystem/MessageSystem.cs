@@ -78,9 +78,7 @@ namespace ValkyrEngine.MessageSystem
     private IMessageHandler FindMessageHandlerWithCallback<T>(Func<T, Task> callback)
       where T : IMessage
     {
-      return receiver.Find((receiver) =>
-                            receiver is MessageHandler<T>
-                            && ((MessageHandler<T>)receiver).HasAction(callback));
+      return receiver.Find((receiver) => ((MessageHandler<T>)receiver).HasAction(callback));
 
     }
   }
