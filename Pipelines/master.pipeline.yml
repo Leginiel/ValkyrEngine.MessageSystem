@@ -77,6 +77,8 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack ValkyrEngine.MessageSystem.csproj'
+  env:
+    MSBUILDSINGLELOADCONTEXT: 1
   inputs:
     command: 'pack'
     packagesToPack: 'ValkyrEngine.MessageSystem/ValkyrEngine.MessageSystem.csproj'
