@@ -9,7 +9,7 @@ trigger:
 - develop
 
 pool:
-  name: Hosted VS2019
+  name: windows-latest
 
 variables:
   buildConfiguration: 'Release'
