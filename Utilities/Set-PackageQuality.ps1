@@ -25,8 +25,9 @@ function New-VSTSAuthenticationToken
 {
 		[CmdletBinding()]
 		[OutputType([object])]
-				 
+			 
 		$accesstoken = "";
+		
 		if([string]::IsNullOrEmpty($env:System_AccessToken)) 
 		{
 				if([string]::IsNullOrEmpty($env:PersonalAccessToken))
@@ -64,7 +65,8 @@ function Set-PackageQuality
 		$token = New-VSTSAuthenticationToken
 
 		if ($packageVersion -eq "") {
-			$file = Get-Item "$PSScriptRoot\..\*.nupkg"
+			$path = Split-Path -Path $PSScriptRoot -Parent
+			$file = Get-Item "$path\*.nupkg"
 			$VersionData = [regex]::matches($file.FullName,$VersionRegex)
 			$packageVersion=$VersionData[0]
 		}
