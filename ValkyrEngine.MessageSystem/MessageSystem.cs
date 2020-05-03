@@ -9,30 +9,19 @@ namespace ValkyrEngine.MessageSystem
   /// <summary>
   /// Provides a base class for handling messages andreceiver. 
   /// </summary>
-  public class MessageSystem
+  public class MessageSystem : IMessageSystem
   {
     private readonly List<IMessageHandler> receiver = new List<IMessageHandler>();
     private readonly List<Task> runningReceiverTasks = new List<Task>();
     private readonly ConcurrentQueue<IMessage> messages = new ConcurrentQueue<IMessage>();
     private readonly MessageHandlerFactory receiverFactory = new MessageHandlerFactory();
 
-    /// <summary>
-    /// Returns the registered receiver.
-    /// </summary>
+    /// <inheritdoc/>
     public IReadOnlyList<IMessageHandler> Receiver => receiver;
-    /// <summary>
-    /// Retuns the pending messages.
-    /// </summary>
-    /// <remarks>
-    /// Pending messages will be processed by the next <seealso cref="ProcessMessagesAsync"/> call.
-    /// </remarks>
+    /// <inheritdoc/>
     public IReadOnlyCollection<IMessage> ActiveMessages => messages;
 
-    /// <summary>
-    /// Registeres a new receiver callback. 
-    /// </summary>
-    /// <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
-    /// <param name="callback">Callback, that should be called for the message.</param>
+    /// <inheritdoc/>
     public void RegisterReceiver<T>(Func<T, Task> callback)
       where T : IMessage
     {
@@ -44,11 +33,7 @@ namespace ValkyrEngine.MessageSystem
 
       receiver.Add(receiverFactory.CreateMessageHandler(callback));
     }
-    /// <summary>
-    /// Removes an existing receier from the messaging system.
-    /// </summary>
-    /// <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
-    /// <param name="callback">Callback, with whon the receiver was registered.</param>
+    /// <inheritdoc/>
     public void UnregisterReceiver<T>(Func<T, Task> callback)
       where T : IMessage
     {
@@ -62,11 +47,7 @@ namespace ValkyrEngine.MessageSystem
 
       receiver.Remove(handler);
     }
-    /// <summary>
-    /// Adds a new message to the messaging system. 
-    /// </summary>
-    /// <typeparam name="T">Type of the message.</typeparam>
-    /// <param name="message">Message, that should be added.</param>
+    /// <inheritdoc/>
     public void SendMessage<T>(T message)
       where T : IMessage
     {
@@ -75,10 +56,7 @@ namespace ValkyrEngine.MessageSystem
 
       messages.Enqueue(message);
     }
-    /// <summary>
-    /// Processes all pending messages with an asynchronous operation.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public async Task ProcessMessagesAsync()
     {
       runningReceiverTasks.Clear();
@@ -100,9 +78,7 @@ namespace ValkyrEngine.MessageSystem
     private IMessageHandler FindMessageHandlerWithCallback<T>(Func<T, Task> callback)
       where T : IMessage
     {
-      return receiver.Find((receiver) =>
-                            receiver is MessageHandler<T>
-                            && ((MessageHandler<T>)receiver).HasAction(callback));
+      return receiver.Find((receiver) => ((MessageHandler<T>)receiver).HasAction(callback));
 
     }
   }

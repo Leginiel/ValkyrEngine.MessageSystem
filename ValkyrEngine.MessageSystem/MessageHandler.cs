@@ -21,17 +21,20 @@ namespace ValkyrEngine.MessageSystem
       return typeof(T).Equals(message.GetType());
     }
 
-    public async Task HandleMessageAsync(IMessage message)
+    public Task HandleMessageAsync(IMessage message)
     {
       if (message == null)
         throw new ArgumentNullException(nameof(message));
-
-      await callback.Invoke((T)message);
+      return HandleMessageInternalAsync(message);
     }
 
     internal bool HasAction(Func<T, Task> callback)
     {
       return this.callback.Equals(callback);
+    }
+    private async Task HandleMessageInternalAsync(IMessage message)
+    {
+      await callback.Invoke((T)message);
     }
   }
 }
