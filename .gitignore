@@ -11,3 +11,4 @@
 /ValkyrEngine.MessageSystem.Tests/bin/Debug/netcoreapp3.1
 /ValkyrEngine.MessageSystem.Tests/obj
 /ValkyrEngine.MessageSystem/bin/Debug/netstandard2.0
+/ValkyrEngine.MessageSystem/ValkyrEngine.MessageSystem.xml

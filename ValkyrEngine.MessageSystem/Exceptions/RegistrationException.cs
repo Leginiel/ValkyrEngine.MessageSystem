@@ -5,6 +5,7 @@ namespace ValkyrEngine.MessageSystem.Exceptions
   /// <summary>
   /// Represents exceptions, that occur during registration on the message system.
   /// </summary>
+  [Serializable]
   public class RegistrationException : Exception
   {
     /// <summary>
