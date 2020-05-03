@@ -32,6 +32,8 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
+  env:
+    MSBUILDSINGLELOADCONTEXT: 1
   inputs:
     projects: ValkyrEngine.MessageSystem.sln
 
