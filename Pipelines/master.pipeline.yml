@@ -103,14 +103,15 @@ steps:
   inputs:
     targetType: filePath
     filePath: 'Utilities/UpdateDocumentation.ps1'
-    arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName="ValkyrEngine.MessageSystem.dll"'
+    arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName "**/bin/Release/**/ValkyrEngine.MessageSystem.dll"'
 
 - task: NuGetCommand@2
   displayName: 'NuGet push'
   inputs:
     command: push
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/ValkyrEngine.MessageSystem.*.nupkg'
-    publishVstsFeed: 'db46bcea-c2fd-4d5a-a60d-6b8a87dd6ba9'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '7d6ca53e-efbe-4997-824c-1ba1235a5b75/00c2c3a6-4465-4443-a765-a5aa67bfe68e'
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage from $(Build.SourcesDirectory)\ValkyrEngine.MessageSystem.Tests\coverage.cobertura.xml'
