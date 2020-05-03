@@ -12,8 +12,10 @@ git clone https://oauth:$env:SYSTEM_ACCESSTOKEN@$repositoryPath
 echo "Step 2: Remove old Documentation"
 New-Item -Path $gitFolder/$destinationPath -ItemType directory -Force
 Get-ChildItem $gitFolder/$destinationPath -Filter *.md -Recurse | Remove-Item
-echo "Step 3: Creating documentation for $sourceFileName"
-./docpal.exe ./$sourceFileName -out $gitFolder/$destinationPath
+
+$sourceFilePath=Get-ChildItem –Path $sourceFileName
+echo "Step 3: Creating documentation for $sourceFilePath"
+./docpal.exe $sourceFilePath -out $gitFolder/$destinationPath
 echo "Step 4: Switching to GitFolder ($gitFolder)"
 cd ./$gitFolder
 echo "Step 5: Setting Git Config"
