@@ -22,7 +22,7 @@ echo "Step 5: Setting Git Config"
 git config user.email "cd@valkyrEngine.com"
 git config user.name "Continous delivery publish Task"
 git config --unset-all http.Leginiel.extraheader
-git config http.Leginiel.extraheader "AUTHORIZATION: bearer <System_AccessToken>"
+git config http.Leginiel.extraheader "AUTHORIZATION: bearer <$env:SYSTEM_ACCESSTOKEN>"
 echo "Step 6: Changes commited"
 git add *.md
 git commit -m "Updated Documentation"
