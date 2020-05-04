@@ -7,19 +7,22 @@ name: $(Rev:r)
 
 trigger:
 - develop
+pr:
+- develop
 
 pool:
-  name: Hosted VS2017
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet restore'
+- task: NuGetCommand@2
   inputs:
-    command: restore
-    projects: ValkyrEngine.MessageSystem.sln
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+    vstsFeed: '7d6ca53e-efbe-4997-824c-1ba1235a5b75/00c2c3a6-4465-4443-a765-a5aa67bfe68e'
 
 - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
   displayName: 'Prepare analysis on SonarCloud'
@@ -36,6 +39,7 @@ steps:
     MSBUILDSINGLELOADCONTEXT: 1
   inputs:
     projects: ValkyrEngine.MessageSystem.sln
+    arguments: '-c=$(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
