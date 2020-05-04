@@ -15,7 +15,7 @@ Get-ChildItem $gitFolder/$destinationPath -Filter *.md -Recurse | Remove-Item
 
 $sourceFilePath=Get-ChildItem –Path $sourceFileName
 echo "Step 3: Creating documentation for $sourceFilePath"
-./docpal.exe $sourceFilePath -out $gitFolder/$destinationPath
+dotnet docpal $sourceFilePath -out $gitFolder/$destinationPath
 echo "Step 4: Switching to GitFolder ($gitFolder)"
 cd ./$gitFolder
 echo "Step 5: Setting Git Config"

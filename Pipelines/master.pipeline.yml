@@ -95,15 +95,17 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy UpdateDocumentation.ps1 to: $(Build.ArtifactStagingDirectory)'
   inputs:
+    enabled: false
     Contents: 'Utilities/UpdateDocumentation.ps1'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PowerShell@2
   displayName: 'PowerShell Script'
   inputs:
+    enabled: false
     targetType: filePath
     filePath: 'Utilities/UpdateDocumentation.ps1'
-    arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName "$(Build.SourcesDirectory)/**/bin/$(buildConfiguration)/**/ValkyrEngine.MessageSystem.dll"'
+    arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName "$(Build.SourcesDirectory)/ValkyrEngine.MessageSystem/**/bin/$(buildConfiguration)/**/ValkyrEngine.MessageSystem.dll"'
 
 - task: NuGetCommand@2
   inputs:
