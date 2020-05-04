@@ -7,7 +7,7 @@
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>C:\Users\hunte_000.Leginiel-PC\Source\Repos\ValkyrEngine.MessageSystem\ValkyrEngine.MessageSystem\ValkyrEngine.MessageSystem.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

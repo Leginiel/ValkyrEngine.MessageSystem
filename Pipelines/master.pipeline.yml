@@ -103,7 +103,7 @@ steps:
   inputs:
     targetType: filePath
     filePath: 'Utilities/UpdateDocumentation.ps1'
-    arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName "$(Build.SourcesDirectory)/**/ValkyrEngine.MessageSystem.xml"'
+    arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName "$(Build.SourcesDirectory)/**/bin/$(buildConfiguration)/**/ValkyrEngine.MessageSystem.dll"'
 
 - task: NuGetCommand@2
   inputs:
