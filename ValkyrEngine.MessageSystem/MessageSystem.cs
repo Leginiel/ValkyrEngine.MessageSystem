@@ -79,11 +79,11 @@ namespace ValkyrEngine.MessageSystem
 
     private async void ProcessMessagesAsync(object obj)
     {
-      CancellationTokenSource token = (CancellationTokenSource)obj;
+      CancellationToken token = (CancellationToken)obj;
 
-      while (messages.TryDequeue(out IMessage message))
+      while (!token.IsCancellationRequested)
       {
-        if (token.IsCancellationRequested)
+        if (messages.TryDequeue(out IMessage message))
         {
           await ProcessMessageAsync(message);
         }
