@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ValkyrEngine.MessageSystem.Exceptions;
 
@@ -9,13 +10,15 @@ namespace ValkyrEngine.MessageSystem
   /// <summary>
   /// Provides a base class for handling messages andreceiver. 
   /// </summary>
-  public class MessageSystem : IMessageSystem
+  public class MessageSystem : IMessageSystem, IDisposable
   {
     private readonly List<IMessageHandler> receiver = new List<IMessageHandler>();
-    private readonly List<Task> runningReceiverTasks = new List<Task>();
+    private readonly CancellationTokenSource cts = new CancellationTokenSource();
     private readonly ConcurrentQueue<IMessage> messages = new ConcurrentQueue<IMessage>();
     private readonly MessageHandlerFactory receiverFactory = new MessageHandlerFactory();
 
+    /// <inheritdoc/>
+    public bool Active { get; private set; }
     /// <inheritdoc/>
     public IReadOnlyList<IMessageHandler> Receiver => receiver;
     /// <inheritdoc/>
@@ -57,21 +60,46 @@ namespace ValkyrEngine.MessageSystem
       messages.Enqueue(message);
     }
     /// <inheritdoc/>
-    public async Task ProcessMessagesAsync()
+    public void Activate()
     {
-      runningReceiverTasks.Clear();
+      Active = true;
+      ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessMessagesAsync), cts.Token);
+    }
+    /// <inheritdoc/>
+    public void Deactivate()
+    {
+      Active = false;
+      cts.Cancel();
+    }
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+      cts.Dispose();
+    }
+
+    private async void ProcessMessagesAsync(object obj)
+    {
+      CancellationTokenSource token = (CancellationTokenSource)obj;
 
       while (messages.TryDequeue(out IMessage message))
       {
-        foreach (IMessageHandler handler in receiver)
+        if (token.IsCancellationRequested)
         {
-          if (handler.CanHandle(message))
-          {
-            runningReceiverTasks.Add(handler.HandleMessageAsync(message));
-          }
+          await ProcessMessageAsync(message);
         }
       }
+    }
 
+    private async Task ProcessMessageAsync(IMessage message)
+    {
+      List<Task> runningReceiverTasks = new List<Task>();
+      foreach (IMessageHandler handler in receiver)
+      {
+        if (handler.CanHandle(message))
+        {
+          runningReceiverTasks.Add(handler.HandleMessageAsync(message));
+        }
+      }
       await Task.WhenAll(runningReceiverTasks);
     }
 
@@ -79,7 +107,6 @@ namespace ValkyrEngine.MessageSystem
       where T : IMessage
     {
       return receiver.Find((receiver) => ((MessageHandler<T>)receiver).HasAction(callback));
-
     }
   }
 }

@@ -17,6 +17,20 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: GitVersion@5
+  inputs:
+    runtime: 'core'
+    configFilePath: 'GitVersionConfig.yaml'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $UtcDateTime = (Get-Date).ToUniversalTime()
+      $FormattedDateTime = (Get-Date -Date $UtcDateTime -Format "yyyyMMdd-HHmmss")
+      $CI_Version = "$env:GITVERSION_MAJORMINORPATCH-ci-$FormattedDateTime"
+      Write-Host ("##vso[task.setvariable variable=CI_Version;]$CI_Version")
+
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
@@ -61,6 +75,42 @@ steps:
   displayName: 'Run Code Analysis'
   inputs:
     extraProperties: sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\ValkyrEngine.MessageSystem.Tests\coverage.opencover.xml
+
+- task: NuGetCommand@2
+  displayName: 'nuget pack ValkyrEngine.MessageSystem.csproj'
+  env:
+    MSBUILDSINGLELOADCONTEXT: 1
+  inputs:
+    command: 'pack'
+    packagesToPack: 'ValkyrEngine.MessageSystem/ValkyrEngine.MessageSystem.csproj'
+    versioningScheme: 'byEnvVar'    
+    versionEnvVar: 'CI_Version'    
+
+- task: CopyFiles@2
+  displayName: 'Copy ValkyrEngine.MessageSystem Documentation File Generator to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    Contents: 'Utilities/docpal.exe'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+#- task: CopyFiles@2
+#  displayName: 'Copy UpdateDocumentation.ps1 to: $(Build.ArtifactStagingDirectory)'
+#  inputs:
+#    Contents: 'Utilities/UpdateDocumentation.ps1'
+#    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+#- task: PowerShell@2
+#  displayName: 'PowerShell Script'
+#  inputs:
+#    targetType: filePath
+#    filePath: 'Utilities/UpdateDocumentation.ps1'
+#    arguments: '-repositoryPath "leginiel.visualstudio.com/ValkyrEngine/_git/ValkyrEngineWiki" -destinationPath ".wiki/Releases/$(CI_Version)/ValkyrEngine.MessageSystem" -sourceFileName "$(Build.SourcesDirectory)/ValkyrEngine.MessageSystem/**/bin/$(buildConfiguration)/**/ValkyrEngine.MessageSystem.dll"'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '7d6ca53e-efbe-4997-824c-1ba1235a5b75/00c2c3a6-4465-4443-a765-a5aa67bfe68e'
 
 - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
   displayName: 'Publish Quality Gate Result'

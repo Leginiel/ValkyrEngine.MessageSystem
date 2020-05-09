@@ -7,13 +7,18 @@ namespace ValkyrEngine.MessageSystem
   /// <summary>
   /// Represents an object, that is providing a messaging system.
   /// </summary>
-  public interface IMessageSystem
+  public interface IMessageSystem : IDisposable
   {
+    /// <summary>
+    /// Returns <code>True</code> if the messaging system is active, otherwise <code>False</code>.
+    /// </summary>
+    bool Active { get; }
+
     /// <summary>
     /// Retuns the pending messages.
     /// </summary>
     /// <remarks>
-    /// Pending messages will be processed by the next <seealso cref="ProcessMessagesAsync"/> call.
+    /// Pending messages will be processed next.
     /// </remarks>
     IReadOnlyCollection<IMessage> ActiveMessages { get; }
     /// <summary>
@@ -27,11 +32,6 @@ namespace ValkyrEngine.MessageSystem
     /// <param name="message">Message, that should be added.</param>
     void SendMessage<T>(T message) where T : IMessage;
     /// <summary>
-    /// Processes all pending messages with an asynchronous operation.
-    /// </summary>
-    /// <returns>The task object representing the asynchronous operation.</returns>
-    Task ProcessMessagesAsync();
-    /// <summary>
     /// Registeres a new receiver callback. 
     /// </summary>
     /// <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
@@ -43,5 +43,13 @@ namespace ValkyrEngine.MessageSystem
     /// <typeparam name="T">Type of message, that the receiver recognizes.</typeparam>
     /// <param name="callback">Callback, with whon the receiver was registered.</param>
     void UnregisterReceiver<T>(Func<T, Task> callback) where T : IMessage;
+    /// <summary>
+    /// Activates the processing capabilities of the message system.
+    /// </summary>
+    void Activate();
+    /// <summary>
+    /// Shuts the messagesystem down and stops processing messages.
+    /// </summary>
+    void Deactivate();
   }
 }
